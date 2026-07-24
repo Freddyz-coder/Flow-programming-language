@@ -1,5 +1,7 @@
 # Flow-programming-language
 everything is inside the flow.tar
+its a custom programming language
+its not ready for deployment althought you can help us grow the flow language bigger
 
 # for windows 11
 Install Rust (if needed)
