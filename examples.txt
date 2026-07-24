@@ -1,0 +1,223 @@
+Example 1:
+Input:
+~~~ Block scoping demo ~~~
+~~~ Variables from an outer scope can be changed inside a block... ~~~
+>> total = 0;
+again 5 {
+    total = total + 1;
+}
+"total:" << show: Add.space << total << show;
+
+~~ ...but a variable CREATED inside a block only lives in that block. ~~
+>> i = 0;
+>> sum = 0;
+aslong i < 5 {
+    >> doubled = i * 2;  ~~ 'doubled' only exists for this pass ~~
+    sum = sum + doubled;
+    i = i + 1;
+}
+"sum of doubles:" << show: Add.space << sum << show;
+
+
+Output:
+total: 5
+sum of doubles: 20
+
+
+Example 2:
+Input:
+~~ String indexing: reuses the same 'index' word arrays already use ~~
+>> word = "Flow";
+word index 0 << show;
+word index 3 << show;
+
+~~ Chained dot access on nested maps ~~
+>> game = map {
+    player: map {
+        name: "Freddy",
+        level: 12
+    }
+};
+game.player.name << show;
+game.player.level << show;
+
+~~ roll() for a random decimal 0-1, roll(low, high) for a random whole number ~~
+>> d6 = roll(1, 6);
+"you rolled:" << show: Add.space << d6 << show;
+
+~~ Note that this is singular comment
+
+~~~Note that this is multiple lines
+1
+2
+3
+~~~
+
+
+Output:
+F
+w
+Freddy
+12
+you rolled: 2
+
+
+
+Example 3:
+Input:
+>> i = 1;
+aslong i <= 20 {
+    check i % 15 == 0 then {
+        "FizzBuzz" << show;
+    } else {
+        check i % 3 == 0 then {
+            "Fizz" << show;
+        } else {
+            check i % 5 == 0 then {
+                "Buzz" << show;
+            } else {
+                i << show;
+            }
+        }
+    }
+    i = i + 1;
+}
+
+
+Output:
+1
+2
+Fizz
+4
+Buzz
+Fizz
+7
+8
+Fizz
+Buzz
+11
+Fizz
+13
+14
+FizzBuzz
+16
+17
+Fizz
+19
+Buzz
+
+
+Example 4:
+Input:
+>> greeting = "Hello, ";
+>> who = "World";
+greeting + who << show;
+
+Output:
+Hello, World
+
+
+Example 5:
+~~ repeat exactly N times ~~
+again 5 {
+    "hello" << show;
+}
+
+~~ while-style loop ~~
+>> i = 0;
+aslong i < 3 {
+    i << show;
+    i = i + 1;
+}
+
+~~ infinite loop with break ~~
+>> counter = 0;
+loop {
+    counter << show;
+    counter = counter + 1;
+    check counter == 3 then break;
+}
+
+
+Output:
+hello
+hello
+hello
+hello
+hello
+0
+1
+2
+0
+1
+2
+
+
+
+Example 6:
+Input:
+~~ Binary Search Tree in Flow ~~
+~~ Demonstrates recursion, maps, arrays, loops, and immutability ~~
+
+~~ Sentinel for an empty tree ~~
+>> empty = "empty";
+
+~~ Insert a value into a BST (returns a new tree) ~~
+put insert(t, v) {
+    check t == empty then {
+        take map { val: v, left: empty, right: empty };
+    } else {
+        check v < t.val then {
+            take map { val: t.val, left: insert(t.left, v), right: t.right };
+        } else {
+            take map { val: t.val, left: t.left, right: insert(t.right, v) };
+        }
+    }
+}
+
+~~ In‑order traversal: prints values in sorted order ~~
+put inorder(t) {
+    check t != empty then {
+        inorder(t.left);
+        t.val << show: Add.space;
+        inorder(t.right);
+    }
+}
+
+~~ ---- Main program ---- ~~
+>> values = box [5, 3, 7, 2, 4, 6, 8];   ~~ our unsorted numbers
+>> tree = empty;
+>> i = 0;
+
+~~ Build the tree by inserting each element ~~
+aslong i < 7 {
+    tree = insert(tree, values index i);
+    i = i + 1;
+}
+
+~~ Print the sorted tree ~~
+"Sorted values: " << show: Add.space;
+inorder(tree);
+"" << show;   ~~ final newline
+
+
+
+Output:
+Sorted values:  2 3 4 5 6 7 8
+
+
+Example 7:
+Input:
+>> score = 100;
+check score >= 90 then {
+    "A grade" << show;
+} else {
+    "Not an A" << show;
+}
+
+~~ single-statement form ~~
+check score > 50 then "Passing" << show;
+
+Output:
+A grade
+Passing
